@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">CountTrainer</string>
+
+    <string name="easyLevelMinNumber">1</string>
+    <string name="easyLevelMaxNumber">10</string>
+    <string name="mediumLevelMinNumber">10</string>
+    <string name="mediumLevelMaxNumber">50</string>
+    <string name="hardLevelMinNumber">50</string>
+    <string name="hardLevelMaxNumber">99</string>
+
+    <string name="actionPlus">plus</string>
+    <string name="actionMinus">minus</string>
+    <string name="actionMultiply">multiply</string>
+
+    <string name="easyLevelTime">10</string>
+    <string name="mediumLevelTime">30</string>
+    <string name="hardLevelTime">60</string>
 </resources>
