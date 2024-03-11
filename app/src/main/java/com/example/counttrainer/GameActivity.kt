@@ -1,11 +1,14 @@
 package com.example.counttrainer
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.widget.Button
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import kotlin.math.max
 import kotlin.random.Random
 
@@ -32,15 +35,43 @@ class GameActivity : AppCompatActivity() {
         val chosenNumbersMin = intent.getStringExtra("chosenNumbersMin")!!.toInt()
         val chosenNumbersMax = intent.getStringExtra("chosenNumbersMax")!!.toInt()
         val chosenActions = intent.getStringExtra("chosenActions")
-        val chosenTime = intent.getStringExtra("chosenTime")
+        var chosenTime = intent.getStringExtra("chosenTime")!!.toInt()
 
         var actions = chosenActions!!.split(" ")
         var score = 0
         textViewScore.text = score.toString()
-        var gameTime = chosenTime
-        textViewTime.text = gameTime
+        textViewTime.text = chosenTime.toString()
 
         var rightAnswer = 0
+
+        val timer = object: CountDownTimer((chosenTime.toLong() * 1000), 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                chosenTime--
+                textViewTime.text = chosenTime.toString()
+            }
+
+            override fun onFinish() {
+                buttonAnswer1.isEnabled = false
+                buttonAnswer2.isEnabled = false
+                buttonAnswer3.isEnabled = false
+                buttonAnswer4.isEnabled = false
+                buttonStop.text = "НАЗАД"
+
+                val builder: AlertDialog.Builder = AlertDialog.Builder(this@GameActivity)
+                builder
+                    .setMessage("Ваш счет: $score.")
+                    .setTitle("Игра окончена.")
+                    .setNegativeButton("В главное меню") { dialog, which ->
+                        val intent = Intent(this@GameActivity, MainActivity::class.java)
+                        startActivity(intent)
+                    }
+
+                val dialog: AlertDialog = builder.create()
+                dialog.show()
+            }
+        }
+
+        timer.start()
 
         fun randomNumber(): Int = Random.nextInt(chosenNumbersMin, chosenNumbersMax)
 
